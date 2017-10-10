@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [[ $# -eq 1 ]]; then
+    ./gradlew $1
+fi
+if [[ $# -eq 2 ]]; then
+    ./gradlew $1 -PliquibaseCommandValue=$2
+fi
