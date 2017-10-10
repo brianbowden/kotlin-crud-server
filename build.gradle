@@ -1,0 +1,55 @@
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'application'
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use 'jcenter' for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+// Rather than being contained in a Kotlin class, our main(..) method resides at the package level.
+// At compile time, Kotlin puts methods at the package level into compile-time classes named based on
+// the method's containing file (in this case, Main.kt).
+mainClassName = "com.peak.prototype.MainKt"
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    // SLF4J Logging API with Simple implementation
+    compile 'org.slf4j:slf4j-api:1.7.12'
+    compile 'org.slf4j:slf4j-simple:1.7.12'
+
+    // Spark Java (not to be confused with Apache Spark, the data science library)
+    compile "com.sparkjava:spark-core:2.6.0"
+    // Spark Java (Kotlin DSLs); this is not necessary for use with Kotlin, but it makes it cleaner
+    compile "com.sparkjava:spark-kotlin:1.0.0-alpha"
+
+    // Moshi is a JSON serializer/deserializer
+    compile 'com.squareup.moshi:moshi-kotlin:1.5.0'
+
+    // Kotlin Standard Library
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // Declare the dependency for your favourite test framework you want to use in your tests.
+    testCompile 'junit:junit:4.12'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.peak.prototype.MainKt'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+buildscript {
+    ext.kotlin_version = '1.1.51'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
