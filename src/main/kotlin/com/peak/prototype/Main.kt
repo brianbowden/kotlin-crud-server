@@ -6,6 +6,6 @@ private val log = LoggerFactory.getLogger("Main")
 
 fun main(args: Array<String>) {
     log.info("Firing up routes...")
-    val routes = Routes()
+    Routes.listen()
     log.info("Routes fired up")
 }

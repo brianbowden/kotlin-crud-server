@@ -8,11 +8,11 @@ import spark.Spark.initExceptionHandler
 import spark.Spark.path
 import spark.kotlin.*
 
-class Routes {
+object Routes {
 
     private val log = LoggerFactory.getLogger(Routes::class.java)
 
-    init {
+    fun listen() {
         initExceptionHandler {
             log.error("Failed to start Spark: ${it.message}")
             stop()
