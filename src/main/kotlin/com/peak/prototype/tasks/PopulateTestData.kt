@@ -1,9 +1,9 @@
 package com.peak.prototype.tasks
 
+import com.peak.prototype.User
 import com.peak.prototype.db.PeakDb
-import org.jooq.Record
-import org.jooq.Table
-import org.jooq.TableRecord
+import com.peak.prototype.gen.tables.Users.*
+import com.peak.prototype.gen.tables.records.UserRecord
 import org.jooq.impl.DSL.field
 import org.jooq.impl.DSL.table
 
@@ -27,6 +27,21 @@ class PopulateTestData : BaseTask() {
                 .values("David", "Hunt", "david@hunt.com")
                 .values("Michael", "Brooks", "michael@brooks.com")
                 .execute()
+        }
+
+        PeakDb.use {
+            insertInto(USERS, USERS.FIRST_NAME, USERS.LAST_NAME, USERS.EMAIL)
+                .values("Brian", "Bowden", "brian@bowden.com")
+                .values("Rob", "Scott", "rob@scott.com")
+                .values("Lee", "Adkins", "lee@adkins.com")
+                .values("Adam", "Tootle", "adam@tootle.com")
+                .values("David", "Hunt", "david@hunt.com")
+                .values("Michael", "Brooks", "michael@brooks.com")
+                .execute()
+        }
+
+        PeakDb.use {
+            User(firstName = "Brian", lastName = "Bowden", email = "brian@bowden.com").toRecord().store()
         }
     }
 

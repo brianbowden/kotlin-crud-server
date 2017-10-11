@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.jooq:jooq-codegen:3.10.0'
+    }
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+
+    compile 'org.jooq:jooq:3.10.0'
+    compile 'org.jooq:jooq-meta:3.10.0'
+    compile 'org.jooq:jooq-codegen:3.10.0'
+}
