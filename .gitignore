@@ -68,3 +68,4 @@ atlassian-ide-plugin.xml
 
 # Private config
 local.properties
+*/config.properties

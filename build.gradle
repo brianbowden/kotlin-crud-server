@@ -1,18 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.1.51'
 
-    // Load local.properties into project
-    File localPropsFile = file('./local.properties')
-    if (localPropsFile.exists()) {
-        Properties p = new Properties()
-        p.load(new FileInputStream(localPropsFile))
-        p.each { name, value ->
-            ext.set(name as String, value)
-        }
-    } else {
-        throw new IllegalStateException("local.properties could not be located for build process")
-    }
-
     repositories {
         mavenCentral()
     }
@@ -36,6 +24,7 @@ repositories {
     // Use 'jcenter' for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    mavenCentral()
 }
 
 // Rather than being contained in a Kotlin class, our main(..) method resides at the package level.
@@ -46,7 +35,6 @@ mainClassName = "com.peak.prototype.MainKt"
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // SLF4J Logging API with Simple implementation
-    compile 'org.slf4j:slf4j-api:1.7.12'
     compile 'org.slf4j:slf4j-simple:1.7.12'
 
     // Spark Java (not to be confused with Apache Spark, the data science library)
@@ -56,6 +44,14 @@ dependencies {
 
     // Moshi is a JSON serializer/deserializer
     compile 'com.squareup.moshi:moshi-kotlin:1.5.0'
+
+    // JOOQ, the SQL builder / ORM
+    compile 'org.jooq:jooq:3.10.0'
+    compile 'org.jooq:jooq-meta:3.10.0'
+    compile 'org.jooq:jooq-codegen:3.10.0'
+
+    // MySQL driver
+    compile 'mysql:mysql-connector-java:5.1.6'
 
     // Kotlin Standard Library
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -68,9 +64,9 @@ liquibase {
     activities {
         main {
             changeLogFile 'db/masterChangeLog.xml'
-            url project.ext.dbUrl
-            username project.ext.dbUser
-            password project.ext.dbPass
+            url System.getenv("PEAK_DB_URL")
+            username System.getenv("PEAK_DB_USER")
+            password System.getenv("PEAK_DB_PASS")
         }
     }
 }
@@ -80,4 +76,10 @@ jar {
         attributes 'Main-Class': 'com.peak.prototype.MainKt'
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+run {
+    if (project.hasProperty("runArgs")) {
+        args Eval.me(runArgs)
+    }
 }
