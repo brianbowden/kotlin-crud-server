@@ -1,5 +1,6 @@
 package com.peak.prototype.extensions
 
+import com.peak.prototype.ApiError
 import com.peak.prototype.JsonModel
 import com.peak.prototype.moshi
 import spark.kotlin.RouteHandler
@@ -24,7 +25,13 @@ val RouteHandler.res
 // because normally generic types are unable to be operated
 // on at compile time. Oh and "T : JsonModel" means that
 // T must be a subclass of JsonModel.
-inline fun <reified T : JsonModel> RouteHandler.toJson(obj: T): String {
+inline fun <reified T : JsonModel?> RouteHandler.toJson(obj: T): String {
     response.type("application/json")
     return moshi.adapter(T::class.java).toJson(obj)
+}
+
+fun RouteHandler.toError(message: String?, status: Int = 400): String {
+    response.type("application/json")
+    response.status(status)
+    return moshi.adapter(ApiError::class.java).toJson(ApiError(message))
 }

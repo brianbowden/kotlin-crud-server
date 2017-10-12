@@ -105,7 +105,7 @@ task('generateDbCode') {
             }
 
             database() {
-                name('org.jooq.util.mysql.MySQLDatabase')
+                delegate.invokeMethod('name', 'org.jooq.util.mysql.MySQLDatabase')
                 includes('.*')
                 excludes('.*DATABASECHANGE.*')
                 inputSchema('peak_proto_dev')

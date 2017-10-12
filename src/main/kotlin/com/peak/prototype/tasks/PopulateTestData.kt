@@ -13,23 +13,10 @@ class PopulateTestData : BaseTask() {
         val command = "populateTestData"
     }
 
-    private val usersTable = table("users")
-
     override fun runTask(args: List<String>) {
 
         PeakDb.use {
-            truncate(usersTable)
-            insertInto(usersTable, field("first_name"), field("last_name"), field("email"))
-                .values("Brian", "Bowden", "brian@bowden.com")
-                .values("Rob", "Scott", "rob@scott.com")
-                .values("Lee", "Adkins", "lee@adkins.com")
-                .values("Adam", "Tootle", "adam@tootle.com")
-                .values("David", "Hunt", "david@hunt.com")
-                .values("Michael", "Brooks", "michael@brooks.com")
-                .execute()
-        }
-
-        PeakDb.use {
+            truncate(USERS).execute()
             insertInto(USERS, USERS.FIRST_NAME, USERS.LAST_NAME, USERS.EMAIL)
                 .values("Brian", "Bowden", "brian@bowden.com")
                 .values("Rob", "Scott", "rob@scott.com")
@@ -40,9 +27,20 @@ class PopulateTestData : BaseTask() {
                 .execute()
         }
 
+        /**
+        val usersTable = table("users")
         PeakDb.use {
-            User(firstName = "Brian", lastName = "Bowden", email = "brian@bowden.com").toRecord().store()
+        truncate(usersTable)
+        insertInto(usersTable, field("first_name"), field("last_name"), field("email"))
+        .values("Brian", "Bowden", "brian@bowden.com")
+        .values("Rob", "Scott", "rob@scott.com")
+        .values("Lee", "Adkins", "lee@adkins.com")
+        .values("Adam", "Tootle", "adam@tootle.com")
+        .values("David", "Hunt", "david@hunt.com")
+        .values("Michael", "Brooks", "michael@brooks.com")
+        .execute()
         }
+         **/
     }
 
 }

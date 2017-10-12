@@ -6,18 +6,14 @@ import org.jooq.impl.DSL
 
 object PeakDb {
 
-    private var dslContext: DSLContext? = null
+    val ctx = DSL.using(
+        Config.DB_URL,
+        Config.DB_USER,
+        Config.DB_PASS
+    )
 
     fun use(handler: DSLContext.()->Unit) {
-        if (dslContext == null) {
-            dslContext = DSL.using(
-                    Config.DB_URL,
-                    Config.DB_USER,
-                    Config.DB_PASS
-            )
-        }
-
         // !! means "Trust me, compiler, this won't be null at this point, even though you think it could be."
-        dslContext!!.apply(handler)
+        ctx!!.apply(handler)
     }
 }
