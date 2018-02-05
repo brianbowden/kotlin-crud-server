@@ -1,4 +1,4 @@
-## Peak Prototype: JVM ##
+## Base Kotlin HTTP Server ##
 
 - Kotlin
 - Spark web framework
